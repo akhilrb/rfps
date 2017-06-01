@@ -1,0 +1,13 @@
+Trigger is one time shot. Needs debouncing. Also produce sound.
+
+Display contents:
+	Logo, game image, settings fetched
+
+	template
+	two circles (or lines) side by side (ammo and hp)
+	+ aesthetics
+
+	Dead/Respawning timeout
+
+LEDs!
+
