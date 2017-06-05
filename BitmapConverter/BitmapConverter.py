@@ -23,8 +23,9 @@ def fill(sample, ch):
     else:
         sample.append(fill0)
 
+imagePath = raw_input("Enter file name: ")
 try:
-    img = Image.open("arc.bmp")
+    img = Image.open(imagePath)
 except:
     print "File not found!"
     exit(-1)

@@ -1,6 +1,6 @@
 class Frame
 {
-    uint8_t width, height, address;
+    uint8_t width, height;
 
     public:
     Frame(uint8_t w, uint8_t h, byte* frame)
