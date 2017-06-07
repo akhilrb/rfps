@@ -20,7 +20,7 @@ volatile unsigned int health, ammo;
 volatile bool alive;
 
 SPISettings custom(48000000, LSBFIRST, SPI_MODE0);
-volatile byte ledArray = 0b00010000;    //store 8 LED states as 1 byte
+volatile byte ledStatus = 0b00010000;    //store 8 LED states as 1 byte
 /*
 following LSB order:
 0: shoot
@@ -91,10 +91,14 @@ public:
 
 void reload()
 {
+
     reloadTime = 0;
     display.setCursor(15,7);
     display.setTextSize(1);
-    display.println("Reloading...")
+    display.println("Reloading...");
+    display.display();
+    updateRegister();
+    delay(2000)
 }
 
 void shoot()
@@ -103,10 +107,9 @@ void shoot()
     {
         shootTime = 0;
         digitalWrite(ir_tx, HIGH);
-        bitWrite(ledArray, 0, 1);
+        bitWrite(ledStatus, 0, 1);
         updateRegister();
-        bitWrite(ledArray, 0, 0);
-        SPI.transfer()
+        bitWrite(ledStatus, 0, 0);
         ammo -= 1;
         display.display();
         delay(500);
@@ -120,12 +123,12 @@ void hit()
     if(alive)
     {
 
-        bitWrite(ledArray, 2, 1);
-        updateRegister();
-        bitWrite(ledArray, 2, 0);
+        bitWrite(ledStatus, 2, 1);
         updateRegister();
         health = constrain(health-10, 0, health);
         delay(200);     //give a buffer before second hit is recorded
+        bitWrite(ledStatus, 2, 0);
+        updateRegister();
         if(!health)
         {
             deathTime = 0;
@@ -139,14 +142,14 @@ void hit()
 void dead()
 {
 
-    bitWrite(ledArray, 3, 1);
-    bitWrite(ledArray, 4, 0);
+    bitWrite(ledStatus, 3, 1);
+    bitWrite(ledStatus, 4, 0);
     //still need to confirm whether keeping the register always enabled creates any problems, if yes, edit updateRegister function
     updateRegister();
     display.setCursor(27,7);
     display.setTextSize(6);
     display.println("DEAD");
-    bitWrite(ledArray, 2);
+    bitWrite(ledStatus, 2);
     for(uint8_t i = 5; i > 0; i--)
     {
         display.print("Respawning in... ");
@@ -155,14 +158,17 @@ void dead()
         delay(1000);
     }
 
-    bitWrite(ledArray, 3, 0);
-    bitWrite(ledArray, 4, 1);
+    bitWrite(ledStatus, 3, 0);
+    bitWrite(ledStatus, 4, 1);
     updateRegister();
     respawn();
 }
 
 void respawn()      //reset to default values
 {
+    bitWrite(ledStatus, 3, 0);
+    bitWrite(ledStatus, 4, 1);
+    updateRegister();
     ammo = 10;
     health = 100;
     alive = true;
@@ -180,9 +186,8 @@ void updateScreen()
 
 void updateRegister()
 {
-
     SPI.beginTransaction();
-    SPI.transfer(ledArray);
+    SPI.transfer(ledStatus);
     SPI.endTransaction();
 }
 
@@ -194,13 +199,14 @@ void setup()
     attachInterrupt(ir_rx, hit(), RISING);
     attachInterrupt(trig, shoot(), RISING);
     SPI.beginTransaction(custom);   //set custom settings once
-    SPI.transfer(ledArray);
+    SPI.transfer(ledStatus);
     SPI.endTransaction();
 
 }
 
 void loop()
 {
+    updateRegister();
     laser.update();
     display.display();
 }
