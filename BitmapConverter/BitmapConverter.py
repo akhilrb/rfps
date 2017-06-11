@@ -10,11 +10,10 @@ def toHex(bytebuffer):
         return str(hex(int(bytebuffer, 2)))
 
 def toBit(pixel, threshold, invert = 0):    #convert every pixel
-    return int(not invert)
-##    if (pixel <= threshold):
-##        return 1 if invert == 0 else 0      #invert == 0 => treat black pixels in image as data
-##    else:
-##        return 0 if invert == 0 else 1      #invert == 1 => treat white pixels in image as data
+    if (pixel <= threshold):
+        return 1 if invert == 0 else 0      #invert == 0 => treat black pixels in image as data
+    else:
+        return 0 if invert == 0 else 1      #invert == 1 => treat white pixels in image as data
 
 def fill(sample, ch):
 #     fill0 = ':'
