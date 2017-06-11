@@ -10,18 +10,21 @@ def toHex(bytebuffer):
         return str(hex(int(bytebuffer, 2)))
 
 def toBit(pixel, threshold, invert = 0):    #convert every pixel
-    if (pixel <= threshold):
-        return 1 if invert == 0 else 0      #invert == 0 => treat black pixels in image as data
-    else:
-        return 0 if invert == 0 else 1      #invert == 1 => treat white pixels in image as data
+    return int(not invert)
+##    if (pixel <= threshold):
+##        return 1 if invert == 0 else 0      #invert == 0 => treat black pixels in image as data
+##    else:
+##        return 0 if invert == 0 else 1      #invert == 1 => treat white pixels in image as data
 
 def fill(sample, ch):
-    fill0 = ':'
-    fill1 = 'O'
-    if ch == '1':
-        sample.append(fill1)
-    else:
-        sample.append(fill0)
+#     fill0 = ':'
+#     fill1 = 'O'
+    filler = ':' if ch=='1' else '0'
+    sample.append(filler)
+#     if ch == '1':
+#         sample.append(fill1)
+#     else:
+#         sample.append(fill0)
 
 imagePath = raw_input("Enter file name: ")
 try:
