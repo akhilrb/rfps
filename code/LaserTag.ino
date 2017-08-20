@@ -75,15 +75,13 @@ public:
     void update()   //updates the output on ir_tx, no other routine is needed to constantly change pin outputs; function is constantly being called in the loop function
     {
         currentMillis = millis();
-        if( state && currentMillis - prevMillis > time)
+        if(state && currentMillis - prevMillis > time)
         {
             state = false;
             digitalWrite(ir_tx, LOW);
         }
         else()
-        {
             digitalWrite(ir_tx, HIGH);
-        }
     }
 
     void shoot()    //pulling the trigger calls just the shoot function
@@ -91,7 +89,6 @@ public:
 
 void reload()
 {
-
     reloadTime = 0;
     display.setCursor(15,7);
     display.setTextSize(1);
@@ -132,6 +129,7 @@ void hit()
         if(!health)
         {
             deathTime = 0;
+
             alive = 0;
             dead();     //respawn() is called from dead()
         }

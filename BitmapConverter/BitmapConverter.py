@@ -53,7 +53,7 @@ byteBuffer = ""
 hexBuffer = ""
 for x in bw:
     for y in x:
-        ch = str(toBit(y,177,0))               #toBit(pixel, threshold, invert) | invert defaults to 0, use 1 to invert | higher value of threshold => more observed pixels
+        ch = str(toBit(y,123,1))               #toBit(pixel, threshold, invert) | invert defaults to 0, use 1 to invert | higher value of threshold => more observed pixels
         if i%128==0:
             sample.append("\n")
             fill(sample,ch)
