@@ -16,12 +16,14 @@ def toBit(pixel, threshold, invert = 0):    #convert every pixel
         return 0 if invert == 0 else 1      #invert == 1 => treat white pixels in image as data
 
 def fill(sample, ch):
-    fill0 = ':'
-    fill1 = 'O'
-    if ch == '1':
-        sample.append(fill1)
-    else:
-        sample.append(fill0)
+#     fill0 = ':'
+#     fill1 = 'O'
+    filler = ':' if ch=='1' else '0'
+    sample.append(filler)
+#     if ch == '1':
+#         sample.append(fill1)
+#     else:
+#         sample.append(fill0)
 
 imagePath = raw_input("Enter file name: ")
 try:
